@@ -49,10 +49,20 @@
 	echo $aluno;
 	*/
 
+	/* Atualiza usuario.
 	$usuario = new Usuario();
 
 	$usuario->loadById(8);
 	$usuario->update("Jones", "memata");
+
+	echo $usuario;
+	*/
+
+	$usuario = new Usuario();
+
+	$usuario->loadById(8);
+
+	$usuario->delete();
 
 	echo $usuario;
 
