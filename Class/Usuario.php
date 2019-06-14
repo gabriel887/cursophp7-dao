@@ -36,12 +36,9 @@
 
 			$results = $sql->select("SELECT * FROM tb_usuarios WHERE idusuario = :ID", array(":ID"=>$id));
 			if(count($results) > 0){
-				$row = $results[0];
 
-				$this->setIdusuario($row['idusuario']);
-				$this->setDeslogin($row['deslogin']);
-				$this->setDessenha($row['dessenha']);
-				$this->setDtcadastro(new DateTime($row['dtcadastro']));
+				$this->setData($results[0]);
+
 			}
 
 		}
@@ -60,23 +57,56 @@
 			));
 		}
 
+		public function __construct($login = "", $senha = ""){
+			$this->setDeslogin($login);
+			$this->setDessenha($senha);
+		}
+
 		public function login($login, $senha){
 
 			$sql = new Sql();
 
 			$results = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :login AND dessenha = :senha", array(":login"=>$login, ":senha"=>$senha));
 			if(count($results) > 0){
-				$row = $results[0];
+			
+				$this->setData($results[0]);
 
-				$this->setIdusuario($row['idusuario']);
-				$this->setDeslogin($row['deslogin']);
-				$this->setDessenha($row['dessenha']);
-				$this->setDtcadastro(new DateTime($row['dtcadastro']));
 			}else {
 				throw new Exception("Login e/ou senha inválidos.");
 			}
 		}
 
+		public function setData($data){
+			$this->setIdusuario($data['idusuario']);
+			$this->setDeslogin($data['deslogin']);
+			$this->setDessenha($data['dessenha']);
+			$this->setDtcadastro(new DateTime($data['dtcadastro']));	
+		}
+
+		public function insert(){
+			$sql = new Sql();
+			$results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :SENHA)", array(":LOGIN"=>$this->getDeslogin(), ":SENHA"=>$this->getDessenha()));
+
+			if(count($results) > 0){
+			
+				$this->setData($results[0]);
+
+			}
+
+		}
+
+		public function update($login, $senha){
+
+			$sql = new Sql();
+			$this->setDeslogin($login);
+			$this->setDessenha($senha);
+
+			$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :SENHA WHERE idusuario = :ID", array(
+				":LOGIN"=>$this->getDeslogin(), 
+				":SENHA"=>$this->getDessenha(), 
+				":ID"=>$this->getIdusuario()
+			));
+		}
 
 		public function __toString(){
 			return json_encode(array(

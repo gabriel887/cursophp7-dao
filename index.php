@@ -32,9 +32,18 @@
 
 	*/
 
-	//Carrega um usuário utilizando de login e senha
+	/*Carrega um usuário utilizando de login e senha
 	$usuario = new Usuario();
-	$usuario->login("user", "1534562");
+	$usuario->login("user", "153462");
 
 	echo $usuario;
+	*/
+
+	$aluno = new Usuario();
+	$aluno->setDeslogin("aluno");
+	$aluno->setDessenha("a1235");
+
+	$aluno->insert();
+
+	echo $aluno;
 ?>
