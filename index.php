@@ -39,6 +39,7 @@
 	echo $usuario;
 	*/
 
+	/* insere um usuario
 	$aluno = new Usuario();
 	$aluno->setDeslogin("aluno");
 	$aluno->setDessenha("a1235");
@@ -46,4 +47,15 @@
 	$aluno->insert();
 
 	echo $aluno;
+	*/
+
+	$usuario = new Usuario();
+
+	$usuario->loadById(8);
+	$usuario->update("Jones", "memata");
+
+	echo $usuario;
+
+
+
 ?>
